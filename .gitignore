@@ -2,7 +2,6 @@ node_modules/
 /.next
 apps/*/.next
 /.pnp
-.next/
 /.firebase
 .expo
 .pnp.js

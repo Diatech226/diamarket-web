@@ -1,13 +1,13 @@
 export type Currency = 'FCFA' | 'USD';
 export type Locale = 'fr' | 'en' | 'zh';
-export type PaymentStatus = 'unpaid' | 'pending' | 'paid' | 'failed' | 'cancelled' | 'expired' | 'refunded';
+export type PaymentStatus = 'pending' | 'processing' | 'paid' | 'failed' | 'cancelled' | 'expired' | 'refunded' | 'partially_refunded' | 'disputed';
 
 export interface Slide { id: string; title: string; subtitle: string; imageUrl: string; cta: string; }
 export interface Category { id: string; name: string; imageUrl: string; productCount: number; }
 export interface Vendor { id: string; name: string; country: string; city: string; }
 export interface Product {
-  id: string; name: string; description: string; images: string[]; categoryId: string;
-  priceFcfa: number; stock: number; vendor: Vendor; weightKg: number; dimensions: string;
+  id: string; slug: string; name: string; description: string; images: string[]; categoryId: string; category?: { id: string; name: string }; status: 'active' | 'draft' | 'archived'; currency: Currency;
+  priceFcfa: number; stock: number; vendor?: Vendor; weightKg?: number; dimensions?: string;
   isPromo?: boolean; popularity: number; createdAt: string;
 }
 export interface CartItem { product: Product; quantity: number; }
