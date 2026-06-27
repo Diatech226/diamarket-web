@@ -5,23 +5,21 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        olive: {
-          50: "#f7f8f2",
-          100: "#ecefdd",
-          200: "#d9dfbb",
-          300: "#c0ca8e",
-          400: "#a6b260",
-          500: "#8a9944",
-          600: "#6f7c34",
-          700: "#556B2F",
-          800: "#464d23",
-          900: "#3b411f",
-          950: "#202412",
-        }
+        brand: {
+          primary: '#0058BE',
+          dark: '#091426',
+          accent: '#F59E0B',
+          surface: '#F8F9FF',
+          border: '#E2E8F0',
+          muted: '#64748B',
+          success: '#10B981',
+          warning: '#F59E0B',
+          error: '#EF4444',
+        },
       },
     },
   },
-  plugins: []
+  plugins: [],
 };
 
 export default config;

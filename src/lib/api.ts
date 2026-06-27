@@ -1,5 +1,7 @@
 import { Category, Order, PaymentStatus, Product, ShippingOption, Slide, TeamMember } from '@/lib/types';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000/api';
+const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, '');
+export function resolveMediaUrl(url?: string) { if (!url) return ''; if (/^https?:\/\//i.test(url) || url.startsWith('data:')) return url; return `${API_ORIGIN}${url.startsWith('/') ? url : `/${url}`}`; }
 const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 function readStoredToken() { if (typeof window === 'undefined') return null; return window.localStorage.getItem('diamarket_web_token'); }
 async function request<T>(path: string, init?: RequestInit): Promise<T> { const token = readStoredToken(); const res = await fetch(`${API_BASE_URL}${path}`, { ...init, headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(init?.headers ?? {}) }, credentials: 'include', cache: 'no-store' }); const body = await res.json().catch(() => null); if (!res.ok) { throw new Error((body && typeof body === 'object' && 'message' in body ? String((body as any).message) : '') || `API error ${res.status}`); } if (body === null) throw new Error('Réponse API invalide'); return body as T; }
@@ -30,3 +32,6 @@ export type PublicSettings = {
   marketplaceName?: string; logo?: string; favicon?: string; defaultCurrency?: string; supportContact?: string; supportEmail?: string; supportPhone?: string; companyAddress?: string; maintenanceMode?: boolean; maintenanceMessage?: string; maintenanceImage?: string; socialLinks?: Record<string, string>; seo?: { title?: string; description?: string; keywords?: string; openGraphImage?: string }; checkout?: Record<string, unknown>; shipping?: Record<string, unknown>; vendors?: Record<string, unknown>; homepage?: Record<string, unknown>;
 };
 export async function getPublicSettings(): Promise<PublicSettings> { return demoFallback(request<any>('/settings').then(r => r.data ?? {}), {}); }
+export async function getPublicStorefront(domain: string) {
+  return request<any>(`/public/storefront/${encodeURIComponent(domain)}`).then((r) => r.data ?? r);
+}
